@@ -106,7 +106,11 @@ module YamlLint
       if YAML.respond_to?(:unsafe_load)
         YAML.unsafe_load(yaml_data)
       else
-        YAML.load(yaml_data, aliases: true)
+        if RUBY_VERSION < '3.0'
+          YAML.load(yaml_data)
+        else
+          YAML.load(yaml_data, aliases: true)
+        end
       end
       # rubocop:enable Security/YAMLLoad
       true
